@@ -12,6 +12,23 @@ export const genarisStaticParams = async () => {
   }));
 };
 
+// or Dynamic metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ blog: string }>;
+}) {
+  const { blog } = await params;
+  const res = await fetch(`http://localhost:5000/blogs/${blog}`);
+
+  const blogs = await res.json();
+
+  return {
+    title: blogs.title,
+    decsrciption: blogs.decsrciption,
+  };
+}
+
 const BlogDetailsPage = async ({
   params,
 }: {
@@ -24,7 +41,6 @@ const BlogDetailsPage = async ({
   const res = await fetch(`http://localhost:5000/blogs/${blog}`);
 
   const blogs = await res.json();
-  console.log(blogs);
 
   return (
     <div className="my-10">
